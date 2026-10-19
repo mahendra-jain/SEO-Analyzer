@@ -3,52 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Analyzer - AI SEO & Lighthouse</title>
+    <title>PageAnalyzer - Website Speed & SEO Tool</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        /* Custom Scrollbar for Desktop */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
+        
+        /* Hide scrollbar for mobile swipeable tabs */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
         .break-words { word-wrap: break-word; overflow-wrap: break-word; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
     
+    <!-- Header -->
     <header class="bg-white shadow-sm py-4">
         <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
-            <div class="text-2xl font-extrabold text-indigo-600 flex items-center">
-                <i class="fas fa-chart-line mr-2"></i> WebAnalyze AI
-            </div>
-            <div class="text-sm text-gray-500 font-medium bg-gray-100 px-3 py-1 rounded-full">
-                <i class="fab fa-google mr-1"></i> Google API + Content Extraction
+            <div class="text-xl md:text-2xl font-extrabold text-gray-900 flex items-center tracking-tight">
+                <div class="bg-indigo-100 p-2 rounded-lg mr-2 flex items-center justify-center">
+                    <i class="fas fa-bolt text-indigo-600"></i>
+                </div>
+                PageAnalyzer
             </div>
         </div>
     </header>
 
-    <main class="flex-grow max-w-6xl mx-auto px-4 w-full py-12">
-        <div class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
-                Full Lighthouse & SEO Audit
+    <main class="flex-grow max-w-6xl mx-auto px-4 w-full py-8 md:py-12">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-8 md:mb-10">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 md:mb-6 tracking-tight leading-tight">
+                Discover what's slowing down your site.<br class="hidden sm:block">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Then fix it fast.</span>
             </h1>
-            <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                Test Mobile & Desktop performance, and get AI-driven scope of improvements for your Meta Data.
+            
+            <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-6 md:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
+                Get a complete breakdown of your website's health. Analyze real-world loading speeds, pinpoint performance bottlenecks, check accessibility, and receive actionable SEO insights.
             </p>
 
+            <!-- Search Bar -->
             <div class="max-w-4xl mx-auto bg-white p-2 rounded-2xl shadow-lg flex flex-col md:flex-row items-center border border-gray-200 focus-within:ring-4 focus-within:ring-indigo-100 transition-all duration-300 gap-2">
-                <div class="flex items-center w-full bg-transparent px-2">
-                    <i class="fas fa-globe text-gray-400 pl-3 text-xl"></i>
-                    <input type="url" id="urlInput" placeholder="https://your-website.com" class="flex-grow px-4 py-3 bg-transparent outline-none text-gray-700 w-full text-lg" required>
+                <div class="flex items-center w-full bg-transparent px-2 py-1">
+                    <i class="fas fa-globe text-gray-400 pl-2 text-lg md:text-xl"></i>
+                    <input type="url" id="urlInput" placeholder="https://your-website.com" class="flex-grow px-3 py-3 bg-transparent outline-none text-gray-700 w-full text-base sm:text-lg" required>
                 </div>
                 
-                <div class="flex w-full md:w-auto gap-2 px-2 pb-2 md:pb-0 md:px-0">
-                    <select id="deviceStrategy" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-3 outline-none cursor-pointer font-medium">
+                <div class="flex w-full md:w-auto gap-2 px-2 pb-2 md:pb-0 md:px-0 flex-col sm:flex-row">
+                    <select id="deviceStrategy" class="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-3 outline-none cursor-pointer font-medium">
                         <option value="MOBILE">📱 Mobile</option>
                         <option value="DESKTOP">💻 Desktop</option>
                     </select>
                     
-                    <button id="analyzeBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl transition duration-200 flex items-center justify-center whitespace-nowrap shadow-md w-full md:w-auto">
+                    <button id="analyzeBtn" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl transition duration-200 flex items-center justify-center whitespace-nowrap shadow-md">
                         <span id="btnText">Scan</span>
                         <i id="btnIcon" class="fas fa-arrow-right ml-2"></i>
                         <svg id="loadingSpinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -65,97 +77,106 @@
                         <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-3"></i>
                         <div>
                             <p class="text-sm text-red-700 font-bold" id="errorTitle">Error</p>
-                            <p class="text-sm text-red-600 mt-1" id="errorDescription">Check the URL and try again.</p>
+                            <p class="text-sm text-red-600 mt-1 break-words" id="errorDescription">Check the URL and try again.</p>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <p class="text-sm text-indigo-500 mt-4 hidden font-medium animate-pulse" id="statusText">Executing Lighthouse & Content Extraction... (~15 seconds)</p>
+            <p class="text-sm text-indigo-500 mt-4 hidden font-medium animate-pulse" id="statusText">Fetching Performance Diagnostics... (~15 seconds)</p>
         </div>
 
         <div id="resultsContainer" class="hidden opacity-0 transition-opacity duration-500 transform translate-y-4">
             
-            <!-- Overall Score Summary -->
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center w-32">
-                    <span id="scorePerf" class="text-3xl font-black text-gray-400">--</span>
-                    <span class="text-xs font-bold text-gray-500 uppercase mt-1 text-center">Performance</span>
+            <!-- Overall Score Summary (Responsive Grid on Mobile) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8 max-w-3xl mx-auto">
+                <div class="bg-white p-3 sm:p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center">
+                    <span id="scorePerf" class="text-2xl sm:text-3xl font-black text-gray-400">--</span>
+                    <span class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase mt-1 text-center">Performance</span>
                 </div>
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center w-32">
-                    <span id="scoreA11y" class="text-3xl font-black text-gray-400">--</span>
-                    <span class="text-xs font-bold text-gray-500 uppercase mt-1 text-center">Accessibility</span>
+                <div class="bg-white p-3 sm:p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center">
+                    <span id="scoreA11y" class="text-2xl sm:text-3xl font-black text-gray-400">--</span>
+                    <span class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase mt-1 text-center">Accessibility</span>
                 </div>
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center w-32">
-                    <span id="scoreBest" class="text-3xl font-black text-gray-400">--</span>
-                    <span class="text-xs font-bold text-gray-500 uppercase mt-1 text-center">Best Practices</span>
+                <div class="bg-white p-3 sm:p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center">
+                    <span id="scoreBest" class="text-2xl sm:text-3xl font-black text-gray-400">--</span>
+                    <span class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase mt-1 text-center">Best Practices</span>
                 </div>
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center w-32">
-                    <span id="scoreSEO" class="text-3xl font-black text-gray-400">--</span>
-                    <span class="text-xs font-bold text-gray-500 uppercase mt-1 text-center">SEO Score</span>
+                <div class="bg-white p-3 sm:p-4 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center">
+                    <span id="scoreSEO" class="text-2xl sm:text-3xl font-black text-gray-400">--</span>
+                    <span class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase mt-1 text-center">SEO Score</span>
                 </div>
             </div>
 
-            <!-- Tabs -->
-            <div class="flex flex-wrap justify-center gap-2 mb-6 border-b border-gray-200 pb-2">
-                <button class="tab-btn active border-b-2 border-indigo-600 text-indigo-600 py-2 px-4 font-bold text-sm md:text-base focus:outline-none flex items-center transition-colors" data-tab="seo">
-                    <i class="fas fa-search mr-2"></i> On-Page SEO
-                </button>
-                <button class="tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 py-2 px-4 font-bold text-sm md:text-base focus:outline-none flex items-center transition-colors" data-tab="performance">
+            <!-- Swipeable Tabs Navigation on Mobile -->
+            <div class="flex overflow-x-auto hide-scrollbar md:flex-wrap md:justify-center gap-2 mb-6 border-b border-gray-200 pb-2">
+                <button class="tab-btn active shrink-0 border-b-2 border-indigo-600 text-indigo-600 py-2 px-4 font-bold text-sm md:text-base focus:outline-none flex items-center transition-colors" data-tab="performance">
                     <i class="fas fa-tachometer-alt mr-2"></i> Performance
                 </button>
-                <button class="tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 py-2 px-4 font-bold text-sm md:text-base focus:outline-none flex items-center transition-colors" data-tab="accessibility">
+                <button class="tab-btn shrink-0 border-b-2 border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 py-2 px-4 font-bold text-sm md:text-base focus:outline-none flex items-center transition-colors" data-tab="seo">
+                    <i class="fas fa-search mr-2"></i> SEO
+                </button>
+                <button class="tab-btn shrink-0 border-b-2 border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 py-2 px-4 font-bold text-sm md:text-base focus:outline-none flex items-center transition-colors" data-tab="bestpractices">
+                    <i class="fas fa-shield-alt mr-2"></i> Best Practices
+                </button>
+                <button class="tab-btn shrink-0 border-b-2 border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 py-2 px-4 font-bold text-sm md:text-base focus:outline-none flex items-center transition-colors" data-tab="accessibility">
                     <i class="fas fa-universal-access mr-2"></i> Accessibility
                 </button>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <!-- Tab Content Area -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 md:p-8">
                 
-                <!-- 1. SEO Tab -->
-                <div id="seo" class="tab-content block animate-fade-in">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Meta Content & AI Suggestions</h2>
-                    <p class="text-gray-500 text-sm mb-6">Actual content extracted from your page with improvement scopes.</p>
+                <!-- 1. Performance Tab -->
+                <div id="performance" class="tab-content block animate-fade-in space-y-8 md:space-y-10">
                     
-                    <div class="space-y-6 mb-8" id="metaContentBox">
-                        <!-- Actual Title & Desc injected here -->
+                    <!-- CrUX Data -->
+                    <div class="border-b pb-6 md:pb-8">
+                        <div class="flex flex-col sm:flex-row sm:items-start md:items-center justify-between gap-3 mb-6">
+                            <div>
+                                <h2 class="text-lg md:text-xl font-bold text-gray-900 flex items-center"><i class="fas fa-users text-indigo-500 mr-2"></i> Core Web Vitals (Field Data)</h2>
+                                <p class="text-gray-500 text-xs mt-1">Aggregated live user experience over 28 days.</p>
+                            </div>
+                            <div id="cwvAssessmentBadge" class="self-start sm:self-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600">Checking...</div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" id="cruxMetricsContainer"></div>
                     </div>
 
-                    <h3 class="text-xl font-bold text-gray-900 mb-4 border-t pt-6">Lighthouse SEO Checks</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="seoLighthouseBox">
-                        <!-- Lighthouse Audits injected here -->
+                    <!-- Lab Metrics -->
+                    <div class="border-b pb-6 md:pb-8">
+                        <h2 class="text-lg md:text-xl font-bold text-gray-900 flex items-center mb-4 md:mb-6"><i class="fas fa-flask text-indigo-500 mr-2"></i> Lab Diagnostics</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4" id="labMetricsContainer"></div>
+                    </div>
+
+                    <!-- Performance Opportunities -->
+                    <div>
+                        <h2 class="text-lg md:text-xl font-bold text-gray-900 flex items-center mb-2"><i class="fas fa-tools text-indigo-500 mr-2"></i> Opportunities to Improve</h2>
+                        <p class="text-gray-500 text-xs md:text-sm mb-4 md:mb-6">Suggestions to help your page load faster.</p>
+                        <div class="space-y-3" id="perfOpportunitiesBox"></div>
                     </div>
                 </div>
 
-                <!-- 2. Performance Tab -->
-                <div id="performance" class="tab-content hidden animate-fade-in">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Core Web Vitals</h2>
-                    <p class="text-gray-500 text-sm mb-6">Emulated device speed and load times.</p>
-                    
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="text-center p-5 border border-gray-200 rounded-xl bg-gray-50">
-                            <div id="metricFCP" class="text-2xl font-black text-gray-800 mb-1">--</div>
-                            <div class="text-[10px] sm:text-xs text-gray-500 font-bold uppercase tracking-wider">First Contentful Paint</div>
-                        </div>
-                        <div class="text-center p-5 border border-gray-200 rounded-xl bg-gray-50">
-                            <div id="metricLCP" class="text-2xl font-black text-gray-800 mb-1">--</div>
-                            <div class="text-[10px] sm:text-xs text-gray-500 font-bold uppercase tracking-wider">Largest Contentful Paint</div>
-                        </div>
-                        <div class="text-center p-5 border border-gray-200 rounded-xl bg-gray-50">
-                            <div id="metricTBT" class="text-2xl font-black text-gray-800 mb-1">--</div>
-                            <div class="text-[10px] sm:text-xs text-gray-500 font-bold uppercase tracking-wider">Total Blocking Time</div>
-                        </div>
-                        <div class="text-center p-5 border border-gray-200 rounded-xl bg-gray-50">
-                            <div id="metricCLS" class="text-2xl font-black text-gray-800 mb-1">--</div>
-                            <div class="text-[10px] sm:text-xs text-gray-500 font-bold uppercase tracking-wider">Cumulative Layout Shift</div>
-                        </div>
-                    </div>
+                <!-- 2. SEO Tab -->
+                <div id="seo" class="tab-content hidden animate-fade-in">
+                    <h2 class="text-lg md:text-2xl font-bold text-gray-900 mb-2">Meta Content & AI Suggestions</h2>
+                    <div class="space-y-4 md:space-y-6 mb-8" id="metaContentBox"></div>
+
+                    <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-4 border-t pt-6">Full SEO Audits</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="seoLighthouseBox"></div>
                 </div>
 
-                <!-- 3. Accessibility Tab -->
+                <!-- 3. Best Practices Tab -->
+                <div id="bestpractices" class="tab-content hidden animate-fade-in">
+                    <h2 class="text-lg md:text-2xl font-bold text-gray-900 mb-2">Best Practices Checks</h2>
+                    <p class="text-gray-500 text-xs md:text-sm mb-6">Modern web development standards (HTTPS, image resolutions, JS errors).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="bestPracticesContent"></div>
+                </div>
+
+                <!-- 4. Accessibility Tab -->
                 <div id="accessibility" class="tab-content hidden animate-fade-in">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Accessibility Checklist</h2>
-                    <p class="text-gray-500 text-sm mb-6">Ensuring the site is usable by everyone (ARIA, contrasts, navigation).</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="a11yContent"></div>
+                    <h2 class="text-lg md:text-2xl font-bold text-gray-900 mb-2">Accessibility Checks</h2>
+                    <p class="text-gray-500 text-xs md:text-sm mb-6">Ensuring the site is usable by everyone.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="a11yContent"></div>
                 </div>
             </div>
         </div>
@@ -170,6 +191,12 @@
             const errorContainer = document.getElementById('errorContainer');
             const statusText = document.getElementById('statusText');
             
+            // Utility function to stop HTML tags like <title> from breaking the page rendering
+            function escapeHTML(str) {
+                if(!str) return '';
+                return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
+            }
+
             // Tab Logic
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -177,40 +204,82 @@
                         b.classList.remove('border-indigo-600', 'text-indigo-600');
                         b.classList.add('border-transparent', 'text-gray-500');
                     });
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden', 'block'));
+                    document.querySelectorAll('.tab-content').forEach(c => {
+                        c.classList.add('hidden'); c.classList.remove('block');
+                    });
                     btn.classList.add('border-indigo-600', 'text-indigo-600');
-                    document.getElementById(btn.getAttribute('data-tab')).classList.remove('hidden');
-                    document.getElementById(btn.getAttribute('data-tab')).classList.add('block');
+                    const target = document.getElementById(btn.getAttribute('data-tab'));
+                    target.classList.remove('hidden'); target.classList.add('block');
                 });
             });
 
             function updateScoreCircle(elementId, score) {
                 const el = document.getElementById(elementId);
-                el.textContent = score !== null ? score : '--';
-                el.className = 'text-4xl font-black ';
+                el.textContent = score !== null && !isNaN(score) ? score : '--';
+                el.className = 'text-2xl sm:text-3xl font-black ';
                 if (score >= 90) el.className += 'text-green-500';
                 else if (score >= 50) el.className += 'text-yellow-500';
                 else el.className += 'text-red-500';
             }
 
-            // "AI" Logic to evaluate Title and Description
-            function evaluateMeta(type, text) {
-                const len = text.length;
-                if (!text || text === 'Not Found') return { status: 'Missing', class: 'bg-red-100 text-red-700', suggestion: `You must add a ${type} tag. It is critical for search engine rankings.` };
-                
-                if (type === 'Title') {
-                    if (len < 40) return { status: 'Too Short', class: 'bg-yellow-100 text-yellow-700', suggestion: 'Expand your title to 50-60 characters. Try adding primary keywords or your brand name at the end.' };
-                    if (len > 60) return { status: 'Too Long', class: 'bg-yellow-100 text-yellow-700', suggestion: 'Your title is over 60 characters and may get cut off in Google results. Focus on the core keyword.' };
-                    return { status: 'Optimal', class: 'bg-green-100 text-green-700', suggestion: 'Perfect length! Ensure it accurately reflects the page content and is enticing to click.' };
-                } else {
-                    if (len < 120) return { status: 'Too Short', class: 'bg-yellow-100 text-yellow-700', suggestion: 'Expand to 150-160 characters. Add a compelling Call-to-Action (CTA) or value proposition.' };
-                    if (len > 165) return { status: 'Too Long', class: 'bg-yellow-100 text-yellow-700', suggestion: 'Your description is over 160 characters. Search engines will likely truncate it with an ellipsis (...).' };
-                    return { status: 'Optimal', class: 'bg-green-100 text-green-700', suggestion: 'Great length. Make sure it reads naturally and contains your target keywords.' };
-                }
+            function renderMetricCard(name, value, score) {
+                let iconHtml = '<span class="shrink-0 inline-block w-2.5 h-2.5 rounded-full bg-green-500 mr-2"></span>';
+                let textColor = 'text-green-600';
+                if (score === null || score === undefined) { iconHtml = '<span class="shrink-0 inline-block w-2.5 h-2.5 rounded-full bg-gray-400 mr-2"></span>'; textColor = 'text-gray-700'; } 
+                else if (score < 0.5) { iconHtml = '<i class="shrink-0 fas fa-caret-up text-red-500 mr-2 text-sm"></i>'; textColor = 'text-red-600'; } 
+                else if (score < 0.9) { iconHtml = '<span class="shrink-0 inline-block w-2 h-2 bg-yellow-500 mr-2"></span>'; textColor = 'text-yellow-600'; }
+                return `
+                <div class="p-3 sm:p-4 border border-gray-100 rounded-xl bg-gray-50 flex flex-col justify-between h-full">
+                    <div class="text-[11px] sm:text-xs text-gray-500 font-semibold mb-2 flex items-center leading-tight">
+                        ${iconHtml}<span>${name}</span>
+                    </div>
+                    <div class="text-xl sm:text-2xl font-black ${textColor}">${value || '--'}</div>
+                </div>`;
             }
 
-            function escapeHTML(str) {
-                return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag]));
+            // --- Dynamic Audit Renderer Engine ---
+            function renderDynamicAudits(lighthouseData, categoryKey, containerId, isPerformance = false) {
+                const category = lighthouseData.categories[categoryKey];
+                const allAudits = lighthouseData.audits;
+                if (!category || !category.auditRefs) return;
+                
+                let html = '';
+                category.auditRefs.forEach(ref => {
+                    const audit = allAudits[ref.id];
+                    if (!audit || audit.scoreDisplayMode === 'notApplicable' || audit.scoreDisplayMode === 'informative' || audit.scoreDisplayMode === 'manual') return;
+                    if (isPerformance && (ref.group === 'metrics' || ref.group === 'hidden' || audit.score >= 0.9)) return;
+
+                    const passed = audit.score >= 0.9;
+                    const badgeClass = passed ? 'bg-green-100 text-green-700' : (audit.score >= 0.5 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700');
+                    const badgeText = passed ? 'Passed' : (audit.score >= 0.5 ? 'Needs Work' : 'Failed');
+                    let icon = passed ? 'fas fa-check-circle text-green-500' : (audit.score >= 0.5 ? 'fas fa-exclamation-triangle text-yellow-500' : 'fas fa-times-circle text-red-500');
+                    
+                    const safeTitle = escapeHTML(audit.title);
+                    const cleanDesc = audit.description.replace(/\[Learn more.*?\]\(.*?\)/g, '').trim();
+                    const safeDesc = escapeHTML(cleanDesc);
+
+                    let displayValueHtml = '';
+                    if (!passed && audit.displayValue) {
+                        displayValueHtml = `<div class="mt-2 text-xs font-semibold text-red-600 bg-red-50 p-2 rounded border border-red-100 break-words">Found: ${escapeHTML(audit.displayValue)}</div>`;
+                    }
+
+                    html += `
+                    <div class="p-3 sm:p-4 border border-gray-100 rounded-xl bg-gray-50 flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-2">
+                                <h3 class="font-bold text-gray-800 text-sm flex items-start gap-2">
+                                    <i class="${icon} mt-0.5 w-4 shrink-0"></i> <span>${safeTitle}</span>
+                                </h3>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${badgeClass} self-start sm:self-auto">${badgeText}</span>
+                            </div>
+                            <p class="text-xs text-gray-500 ml-0 sm:ml-6">${safeDesc}</p> 
+                        </div>
+                        ${displayValueHtml ? `<div class="ml-0 sm:ml-6">${displayValueHtml}</div>` : ''}
+                    </div>`;
+                });
+                
+                if (html === '') html = `<div class="col-span-full p-4 bg-green-50 text-green-700 rounded-xl text-sm border border-green-200"><i class="fas fa-check-circle mr-2"></i> Excellent! No major issues found in this category.</div>`;
+                document.getElementById(containerId).innerHTML = html;
             }
 
             analyzeBtn.addEventListener('click', async () => {
@@ -221,8 +290,7 @@
                 if (!url || !url.includes('.')) {
                     document.getElementById('errorTitle').textContent = "Invalid URL";
                     document.getElementById('errorDescription').textContent = "Please enter a valid website address.";
-                    errorContainer.classList.remove('hidden');
-                    return;
+                    errorContainer.classList.remove('hidden'); return;
                 }
                 
                 errorContainer.classList.add('hidden');
@@ -239,123 +307,104 @@
                     // -------------------------------------
 
                     const psiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=${strategy}&category=PERFORMANCE&category=SEO&category=ACCESSIBILITY&category=BEST_PRACTICES&key=${apiKey}`;
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+                    const seoExtUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}`;
 
-                    // Fetch Google Lighthouse AND Actual HTML concurrently
-                    const [psiRes, htmlRes] = await Promise.allSettled([
+                    const [psiRes, seoRes] = await Promise.allSettled([
                         fetch(psiUrl).then(res => res.json()),
-                        fetch(proxyUrl).then(res => res.json())
+                        fetch(seoExtUrl).then(res => res.json())
                     ]);
 
-                    if (psiRes.status === 'rejected' || psiRes.value.error) {
-                        throw new Error(psiRes.value?.error?.message || "Google could not scan this URL. It may be blocked.");
-                    }
+                    if (psiRes.status === 'rejected' || psiRes.value.error) throw new Error(psiRes.value?.error?.message || "Could not scan this URL.");
+                    const psiData = psiRes.value;
 
-                    // --- 1. Process Extracted HTML (Meta Text & Suggestions) ---
-                    const metaBox = document.getElementById('metaContentBox');
-                    if (htmlRes.status === 'fulfilled' && htmlRes.value.contents) {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(htmlRes.value.contents, "text/html");
-                        
-                        const title = doc.title || "Not Found";
-                        const metaDescTag = doc.querySelector('meta[name="description"]');
-                        const desc = metaDescTag ? metaDescTag.getAttribute('content') : "Not Found";
+                    // --- Render Top Scores ---
+                    updateScoreCircle('scorePerf', Math.round(psiData.lighthouseResult.categories.performance?.score * 100));
+                    updateScoreCircle('scoreSEO', Math.round(psiData.lighthouseResult.categories.seo?.score * 100));
+                    updateScoreCircle('scoreA11y', Math.round(psiData.lighthouseResult.categories.accessibility?.score * 100));
+                    updateScoreCircle('scoreBest', Math.round(psiData.lighthouseResult.categories['best-practices']?.score * 100));
 
-                        const titleEval = evaluateMeta('Title', title);
-                        const descEval = evaluateMeta('Description', desc);
+                    // --- CrUX Real World Data ---
+                    const cruxContainer = document.getElementById('cruxMetricsContainer');
+                    const cwvBadge = document.getElementById('cwvAssessmentBadge');
+                    const loadingExp = psiData.loadingExperience;
 
-                        metaBox.innerHTML = `
-                            <div class="p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-heading text-indigo-500 mr-2"></i> Actual Meta Title</h3>
-                                    <span class="text-xs font-bold px-2.5 py-1 rounded ${titleEval.class}">${titleEval.status}</span>
-                                </div>
-                                <div class="text-xl font-medium text-blue-700 bg-gray-50 border border-gray-100 p-3 rounded mt-2 break-words">${escapeHTML(title)}</div>
-                                <div class="mt-3 bg-indigo-50 border border-indigo-100 p-3 rounded-lg flex items-start">
-                                    <i class="fas fa-lightbulb text-indigo-500 mt-0.5 mr-2"></i>
-                                    <div>
-                                        <p class="text-sm font-bold text-indigo-900">Scope of Improvement</p>
-                                        <p class="text-sm text-indigo-800 mt-1">${titleEval.suggestion} (Current Length: ${title.length})</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="font-bold text-gray-800 flex items-center"><i class="fas fa-align-left text-indigo-500 mr-2"></i> Actual Meta Description</h3>
-                                    <span class="text-xs font-bold px-2.5 py-1 rounded ${descEval.class}">${descEval.status}</span>
-                                </div>
-                                <div class="text-base text-gray-700 bg-gray-50 border border-gray-100 p-3 rounded mt-2 break-words">${escapeHTML(desc)}</div>
-                                <div class="mt-3 bg-indigo-50 border border-indigo-100 p-3 rounded-lg flex items-start">
-                                    <i class="fas fa-lightbulb text-indigo-500 mt-0.5 mr-2"></i>
-                                    <div>
-                                        <p class="text-sm font-bold text-indigo-900">Scope of Improvement</p>
-                                        <p class="text-sm text-indigo-800 mt-1">${descEval.suggestion} (Current Length: ${desc.length})</p>
-                                    </div>
-                                </div>
-                            </div>
+                    if (loadingExp && loadingExp.metrics) {
+                        cwvBadge.className = loadingExp.overall_category === 'FAST' ? 'self-start sm:self-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-green-100 text-green-700' : 'self-start sm:self-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-red-100 text-red-700';
+                        cwvBadge.innerHTML = loadingExp.overall_category === 'FAST' ? '<i class="fas fa-check-circle mr-1.5"></i> Assessment: Passed' : '<i class="fas fa-times-circle mr-1.5"></i> Assessment: Failed';
+
+                        const formatVal = (m, unit) => m?.percentile ? (unit === 's' ? (m.percentile/1000).toFixed(1)+' s' : m.percentile+' ms') : 'N/A';
+                        const getScore = m => m ? (m.category === 'FAST' ? 1.0 : m.category === 'AVERAGE' ? 0.6 : 0.2) : null;
+
+                        cruxContainer.innerHTML = `
+                            ${renderMetricCard('LCP', formatVal(loadingExp.metrics.LARGEST_CONTENTFUL_PAINT_MS, 's'), getScore(loadingExp.metrics.LARGEST_CONTENTFUL_PAINT_MS))}
+                            ${renderMetricCard('INP', formatVal(loadingExp.metrics.INTERACTION_TO_NEXT_PAINT, 'ms'), getScore(loadingExp.metrics.INTERACTION_TO_NEXT_PAINT))}
+                            ${renderMetricCard('CLS', loadingExp.metrics.CUMULATIVE_LAYOUT_SHIFT_SCORE?.percentile ? (loadingExp.metrics.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile/100).toFixed(2) : 'N/A', getScore(loadingExp.metrics.CUMULATIVE_LAYOUT_SHIFT_SCORE))}
+                            ${renderMetricCard('TTFB', formatVal(loadingExp.metrics.EXPERIMENTAL_TIME_TO_FIRST_BYTE, 's'), getScore(loadingExp.metrics.EXPERIMENTAL_TIME_TO_FIRST_BYTE))}
                         `;
                     } else {
-                        metaBox.innerHTML = `<div class="p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded font-medium"><i class="fas fa-lock mr-2"></i> Website security blocked the content extractor. Exact text hidden, but Lighthouse checks below still ran.</div>`;
+                        cwvBadge.className = 'self-start sm:self-auto inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600';
+                        cwvBadge.innerHTML = '<i class="fas fa-info-circle mr-1.5"></i> No Field Data';
+                        cruxContainer.innerHTML = `<div class="col-span-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-500">Not enough live traffic data available.</div>`;
                     }
 
-                    // --- 2. Process Lighthouse Data ---
-                    const lighthouse = psiRes.value.lighthouseResult;
-                    const audits = lighthouse.audits;
-                    const categories = lighthouse.categories;
+                    // --- Lab Metrics ---
+                    const audits = psiData.lighthouseResult.audits;
+                    document.getElementById('labMetricsContainer').innerHTML = `
+                        ${renderMetricCard('First Contentful Paint', audits['first-contentful-paint']?.displayValue, audits['first-contentful-paint']?.score)}
+                        ${renderMetricCard('Largest Contentful Paint', audits['largest-contentful-paint']?.displayValue, audits['largest-contentful-paint']?.score)}
+                        ${renderMetricCard('Total Blocking Time', audits['total-blocking-time']?.displayValue, audits['total-blocking-time']?.score)}
+                        ${renderMetricCard('Cumulative Layout Shift', audits['cumulative-layout-shift']?.displayValue, audits['cumulative-layout-shift']?.score)}
+                        ${renderMetricCard('Speed Index', audits['speed-index']?.displayValue, audits['speed-index']?.score)}
+                    `;
 
-                    updateScoreCircle('scorePerf', Math.round(categories.performance?.score * 100));
-                    updateScoreCircle('scoreSEO', Math.round(categories.seo?.score * 100));
-                    updateScoreCircle('scoreA11y', Math.round(categories.accessibility?.score * 100));
-                    updateScoreCircle('scoreBest', Math.round(categories['best-practices']?.score * 100));
-
-                    const buildAuditCard = (icon, title, auditKey) => {
-                        const audit = audits[auditKey];
-                        if(!audit) return '';
-                        const passed = audit.score >= 0.9; 
-                        const badgeClass = passed ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
-                        const badgeText = passed ? 'Passed' : 'Review';
+                    // --- AI SEO Meta Fetch ---
+                    const metaBox = document.getElementById('metaContentBox');
+                    if (seoRes.status === 'fulfilled' && seoRes.value.status === 'success') {
+                        const meta = seoRes.value.data;
+                        const title = meta.title || "Not Found", desc = meta.description || "Not Found";
                         
-                        return `
-                        <div class="p-4 border border-gray-100 rounded-xl bg-gray-50 flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="font-bold text-gray-800 text-sm"><i class="${icon} text-gray-400 w-5"></i> ${title}</h3>
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide ${badgeClass}">${badgeText}</span>
+                        const evalMeta = (type, text) => {
+                            const len = text ? text.length : 0;
+                            if(!text || text==='Not Found') return {s: 'Missing', c: 'bg-red-100 text-red-700', t: `Add a ${type} tag.`};
+                            if(type==='Title') return len < 40 ? {s:'Short', c:'bg-yellow-100 text-yellow-700', t:'Expand to 50-60 chars.'} : len > 60 ? {s:'Long', c:'bg-yellow-100 text-yellow-700', t:'Over 60 chars. May get cut off.'} : {s:'Optimal', c:'bg-green-100 text-green-700', t:'Perfect length.'};
+                            return len < 120 ? {s:'Short', c:'bg-yellow-100 text-yellow-700', t:'Expand to 150-160 chars.'} : len > 165 ? {s:'Long', c:'bg-yellow-100 text-yellow-700', t:'Over 160 chars. Will be truncated.'} : {s:'Optimal', c:'bg-green-100 text-green-700', t:'Great length.'};
+                        };
+
+                        const tEval = evalMeta('Title', title), dEval = evalMeta('Description', desc);
+
+                        metaBox.innerHTML = `
+                            <div class="p-4 sm:p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
+                                <div class="flex flex-col sm:flex-row justify-between items-start mb-2 gap-2">
+                                    <h3 class="font-bold text-gray-800 flex items-center text-sm md:text-base"><i class="fas fa-heading text-indigo-500 mr-2"></i> Extracted Title</h3>
+                                    <span class="text-[10px] sm:text-xs font-bold px-2 py-1 rounded ${tEval.c}">${tEval.s}</span>
                                 </div>
-                                <p class="text-xs text-gray-500">${audit.description.split('[')[0]}</p> 
+                                <div class="text-sm sm:text-lg font-medium text-blue-700 bg-gray-50 p-2 sm:p-3 rounded mt-2 border break-words">${escapeHTML(title)}</div>
+                                <p class="text-xs sm:text-sm text-gray-500 mt-2"><i class="fas fa-lightbulb text-yellow-500 mr-1"></i> ${tEval.t} (Len: ${title!=='Not Found'?title.length:0})</p>
                             </div>
-                            ${!passed && audit.displayValue ? `<div class="mt-2 text-xs font-semibold text-red-600 bg-red-50 p-2 rounded border border-red-100">Found: ${audit.displayValue}</div>` : ''}
-                        </div>`;
-                    };
+                            <div class="p-4 sm:p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
+                                <div class="flex flex-col sm:flex-row justify-between items-start mb-2 gap-2">
+                                    <h3 class="font-bold text-gray-800 flex items-center text-sm md:text-base"><i class="fas fa-align-left text-indigo-500 mr-2"></i> Extracted Description</h3>
+                                    <span class="text-[10px] sm:text-xs font-bold px-2 py-1 rounded ${dEval.c}">${dEval.s}</span>
+                                </div>
+                                <div class="text-xs sm:text-base text-gray-700 bg-gray-50 p-2 sm:p-3 rounded mt-2 border break-words">${escapeHTML(desc)}</div>
+                                <p class="text-xs sm:text-sm text-gray-500 mt-2"><i class="fas fa-lightbulb text-yellow-500 mr-1"></i> ${dEval.t} (Len: ${desc!=='Not Found'?desc.length:0})</p>
+                            </div>`;
+                    } else {
+                        metaBox.innerHTML = `<div class="p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded font-medium text-sm"><i class="fas fa-lock mr-2"></i> Could not extract Meta data.</div>`;
+                    }
 
-                    document.getElementById('metricFCP').textContent = audits['first-contentful-paint']?.displayValue || '--';
-                    document.getElementById('metricLCP').textContent = audits['largest-contentful-paint']?.displayValue || '--';
-                    document.getElementById('metricTBT').textContent = audits['total-blocking-time']?.displayValue || '--';
-                    document.getElementById('metricCLS').textContent = audits['cumulative-layout-shift']?.displayValue || '--';
-
-                    document.getElementById('seoLighthouseBox').innerHTML = `
-                        ${buildAuditCard('fas fa-link', 'Descriptive Link Text', 'link-text')}
-                        ${buildAuditCard('fas fa-robot', 'Crawlable Links', 'is-crawlable')}
-                        ${buildAuditCard('fas fa-mobile-alt', 'Mobile Viewport', 'viewport')}
-                        ${buildAuditCard('fas fa-language', 'Valid hreflang', 'hreflang')}
-                    `;
-
-                    document.getElementById('a11yContent').innerHTML = `
-                        ${buildAuditCard('fas fa-eye', 'Color Contrast', 'color-contrast')}
-                        ${buildAuditCard('fas fa-image', 'Image Alt Attributes', 'image-alt')}
-                        ${buildAuditCard('fas fa-font', 'HTML Language Attribute', 'html-has-lang')}
-                        ${buildAuditCard('fas fa-mouse-pointer', 'Tap Targets Size', 'tap-targets')}
-                        ${buildAuditCard('fas fa-list', 'List Structure', 'list')}
-                        ${buildAuditCard('fas fa-keyboard', 'Tab Order', 'tabindex')}
-                    `;
+                    // --- Dynamically Render ALL Checklists ---
+                    renderDynamicAudits(psiData.lighthouseResult, 'performance', 'perfOpportunitiesBox', true);
+                    renderDynamicAudits(psiData.lighthouseResult, 'seo', 'seoLighthouseBox', false);
+                    renderDynamicAudits(psiData.lighthouseResult, 'accessibility', 'a11yContent', false);
+                    renderDynamicAudits(psiData.lighthouseResult, 'best-practices', 'bestPracticesContent', false);
 
                     resultsContainer.classList.remove('hidden');
                     setTimeout(() => resultsContainer.classList.remove('opacity-0', 'translate-y-4'), 50);
 
                 } catch (error) {
                     document.getElementById('errorTitle').textContent = "API Error";
-                    document.getElementById('errorDescription').textContent = error.message;
+                    document.getElementById('errorDescription').textContent = escapeHTML(error.message);
                     errorContainer.classList.remove('hidden');
                 } finally {
                     analyzeBtn.disabled = false;
